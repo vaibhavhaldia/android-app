@@ -94,8 +94,7 @@ fun GameRow(game: Game){
     Card(modifier = Modifier.fillMaxSize()) {
         Row(
             modifier = Modifier.padding(16.dp),
-            verticalAl
-                    ignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically
         ){
             Text(game.emoji, fontSize = 32.sp)
             Spacer(Modifier.width(16.dp))
