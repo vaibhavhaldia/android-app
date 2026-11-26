@@ -41,6 +41,9 @@ import androidx.compose.ui.unit.sp
 import com.example.helloworld.ui.theme.HelloworldTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.getValue
 
 data class Game(
     val id: Int,
@@ -95,8 +98,12 @@ fun GreetingPreview() {
 }
 
 @Composable
-fun GameList(modifier: Modifier = Modifier){
-    val games = remember { sampleGames().toMutableStateList() }
+fun GameList(
+    modifier: Modifier = Modifier,
+    viewModel: GameViewModel = viewModel()
+){
+//    val games = remember { sampleGames().toMutableStateList() }
+    val games by viewModel.games.collectAsState()
     val context = LocalContext.current
 
     LazyColumn(
@@ -110,7 +117,7 @@ fun GameList(modifier: Modifier = Modifier){
                 onClick = {
                     Toast.makeText(context, "${game.name} clicked!", Toast.LENGTH_SHORT).show()
                 },
-                onDelete = {games.removeAll { it.id == game.id }}
+                onDelete = {viewModel.deleteGame(game.id)}
             )
         }
     }
@@ -137,9 +144,6 @@ fun GameRow(
                     contentDescription = "Delete ${game.name}"
                 )
             }
-//            TextButton(onClick = onDelete) {
-//                Text("Delete")
-//            }
             Image(painter = painterResource(game.imageRes),
                 contentDescription = null,
                 modifier = Modifier
